@@ -20,6 +20,13 @@ class ForumPostsController extends ForumsAppController {
  * @var string
  */
 	public $uses = 'Forums.ForumPost';
+    
+/**
+ * Uses
+ * 
+ * @var string
+ */
+	public $helpers = array('Utils.Tree');
 
 
 /**
@@ -27,8 +34,9 @@ class ForumPostsController extends ForumsAppController {
  *
  * @return void
  */
-	public function index() {
-		$this->ForumPost->recursive = 0;
+	public function index($parentId = null) {
+		$this->paginate['conditions']['ForumPost.parent_id'] = $parentId; 
+		$this->paginate['contain'] = array('Child' => array('limit' => 5));
 		$this->set('forumPosts', $this->paginate());
 	}
 
@@ -43,7 +51,19 @@ class ForumPostsController extends ForumsAppController {
 		if (!$this->ForumPost->exists()) {
 			throw new NotFoundException(__('Invalid forum post'));
 		}
-		$this->set('forumPost', $this->ForumPost->read(null, $id));
+		
+		$this->set('forumPost', $forumPost = $this->ForumPost->find('first', array(
+			'conditions' => array(
+				'ForumPost.id' => $id
+				),
+			)));
+		// thought this would work automatically as part of the first find, but seemingly not.
+		$this->set('children', $this->ForumPost->find('threaded', array(
+			'conditions' => array(
+				'ForumPost.lft >' => $forumPost['ForumPost']['lft'],
+				'ForumPost.lft <' => $forumPost['ForumPost']['rght'],
+				),
+			)));
 	}
 
 /**
@@ -51,7 +71,7 @@ class ForumPostsController extends ForumsAppController {
  *
  * @return void
  */
-	public function add($category = null) {
+	public function add($parentId = null) {
 		if ($this->request->is('post')) {
 			$this->ForumPost->create();
 			if ($this->ForumPost->save($this->request->data)) {
@@ -61,13 +81,10 @@ class ForumPostsController extends ForumsAppController {
 				$this->Session->setFlash(__('The forum post could not be saved. Please, try again.'));
 			}
 		}
-		$parentForumPosts = $this->ForumPost->ParentForumPost->find('list');
+		$parentForum = $this->ForumPost->find('first', array('conditions' => array('ForumPost.id' => $parentId)));
 		$creators = $this->ForumPost->Creator->find('list');
 		$modifiers = $this->ForumPost->Modifier->find('list');
-		if (in_array('Categories', CakePlugin::loaded())) {
-			$this->set('categories', $this->ForumPost->Category->generateTreeList(array('Category.model' => 'ForumPost')));
-		}
-		$this->set(compact('parentForumPosts', 'creators', 'modifiers', 'category'));
+		$this->set(compact('parentForum', 'creators', 'modifiers', 'parentId'));
 	}
 
 /**

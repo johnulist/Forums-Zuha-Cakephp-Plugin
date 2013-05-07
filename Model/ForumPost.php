@@ -76,7 +76,7 @@ class ForumPost extends ForumsAppModel {
  * @var array
  */
 	public $hasMany = array(
-		'ChildForumPost' => array(
+		'Child' => array(
 			'className' => 'Forums.ForumPost',
 			'foreignKey' => 'parent_id',
 			'dependent' => false,
@@ -93,8 +93,8 @@ class ForumPost extends ForumsAppModel {
 	
 /**
  * Constructor
- * 
- */
+ * Not needed anymore, left it for the time, because construct is used
+ * quite a bit, and it will save a few minutes to have it here.
 	public function __construct($id = false, $table = null, $ds = null) {
 		if (in_array('Categories', CakePlugin::loaded())) {
 			$this->hasAndBelongsToMany['Category'] = array(
@@ -110,5 +110,6 @@ class ForumPost extends ForumsAppModel {
 		}
     	parent::__construct($id, $table, $ds);		
     }
+ */
 
 }

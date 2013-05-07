@@ -1,11 +1,11 @@
 <div class="forumPosts form">
-<?php echo $this->Form->create('Condition');?>
+<?php echo $this->Form->create('ForumPost');?>
 	<fieldset>
-		<legend><?php echo __('Add Forum Post'); ?></legend>
+		<legend><?php echo __('Post to %s <p>%s</p>', $parentForum['ForumPost']['title'], $parentForum['ForumPost']['body']); ?></legend>
 	<?php
+		echo $this->Form->input('ForumPost.parent_id', array('type' => 'hidden', 'value' => $parentId));
 		echo $this->Form->input('ForumPost.title');
 		echo $this->Form->input('ForumPost.body', array('type' => 'richtext'));
-		echo $this->Form->input('Category.Category.0', array('type' => 'hidden', 'value' => $category));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit'));?>

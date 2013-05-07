@@ -1,106 +1,30 @@
 <div class="forumPosts view">
-<h2><?php  echo __('Forum Post');?></h2>
-	<dl>
-		<dt><?php echo __('Id'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Name'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['name']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Description'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['description']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Plugin'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['plugin']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Controller'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['controller']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Action'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['action']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Extra Values'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['extra_values']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Condition'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['condition']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Model'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['model']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Is Create'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['is_create']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Is Read'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['is_read']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Is Update'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['is_update']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Is Delete'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['is_delete']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Bind Model'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['bind_model']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Creator'); ?></dt>
-		<dd>
-			<?php echo $this->Html->link($condition['Creator']['full_name'], array('controller' => 'users', 'action' => 'view', $condition['Creator']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Modifier'); ?></dt>
-		<dd>
-			<?php echo $this->Html->link($condition['Modifier']['full_name'], array('controller' => 'users', 'action' => 'view', $condition['Modifier']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Created'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['created']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Modified'); ?></dt>
-		<dd>
-			<?php echo h($condition['Condition']['modified']); ?>
-			&nbsp;
-		</dd>
-	</dl>
+	<h2><?php echo $forumPost['ForumPost']['title'];?></h2>
+	<p><?php echo $forumPost['ForumPost']['body']; ?></p>
+	<?php echo $this->Tree->generate($children, array('element' => 'tree_item')); ?>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Forum Post'), array('action' => 'edit', $condition['Condition']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Forum Post'), array('action' => 'delete', $condition['Condition']['id']), null, __('Are you sure you want to delete # %s?', $condition['Condition']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Forum Posts'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Forum Post'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Creator'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-	</ul>
+
+<div class="forumPosts form">
+	<?php echo $this->Form->create('ForumPost', array('url' => array('action' => 'add')));?>
+	<fieldset>
+		<legend><?php echo __('Reply to %s', $forumPost['ForumPost']['title']); ?></legend>
+		<?php
+		echo $this->Form->input('ForumPost.parent_id', array('type' => 'hidden', 'value' => $forumPost['ForumPost']['id']));
+		echo $this->Form->input('ForumPost.title');
+		echo $this->Form->input('ForumPost.body', array('type' => 'richtext'));	?>
+	</fieldset>
+	<?php echo $this->Form->end(__('Submit'));?>
 </div>
+
+<?php
+// set the contextual menu items
+$this->set('context_menu', array('menus' => array(
+	array(
+		'heading' => 'Forums',
+		'items' => array(
+			$this->Html->link(__('List'), array('action' => 'index')),
+			$this->Html->link(__('Edit'), array('action' => 'edit', $forumPost['ForumPost']['id'])),
+			$this->Form->postLink(__('Delete'), array('action' => 'delete', $forumPost['ForumPost']['id']), null, __('Are you sure you want to delete # %s?', $forumPost['ForumPost']['id'])),
+			)
+		),
+	))); ?>
