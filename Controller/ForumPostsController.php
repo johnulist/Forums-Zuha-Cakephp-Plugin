@@ -35,6 +35,10 @@ class ForumPostsController extends ForumsAppController {
  * @return void
  */
 	public function index($parentId = null) {
+		$this->set('parent', $this->ForumPost->find('first', array(
+			'conditions' => array('id' => $parentId),
+			'fields' => array('id', 'title')
+		)));
 		$this->paginate['conditions']['ForumPost.parent_id'] = $parentId; 
 		$this->paginate['contain'] = array(
 			'Child' => array('limit' => 5),
@@ -46,7 +50,11 @@ class ForumPostsController extends ForumsAppController {
 			// 'ForumPost.creator_id',
 			//'Creator.id', 'Creator.username', 'Creator.user_role_id'
 		);
-		$this->set('forumPosts', $this->paginate());
+		$forumPosts = $this->paginate();
+		
+		$pageTitle = (!empty($forumPosts[0]['ParentForumPost']['title'])) ? $forumPosts[0]['ParentForumPost']['title'] . ' Forum' : 'Forums';
+		$this->set('title_for_layout', $pageTitle . ' | ' . __SYSTEM_SITE_NAME);
+		$this->set(compact('forumPosts'));
 	}
 
 /**
@@ -80,6 +88,8 @@ class ForumPostsController extends ForumsAppController {
 					'Creator' => array('fields' => array('id', 'username'))
 				)
 			)));
+			
+		$this->set('title_for_layout', $forumPost['ForumPost']['title'] . ' < ' . $forumPost['ParentForumPost']['title'] . ' Forum | ' . __SYSTEM_SITE_NAME);
 	}
 
 /**

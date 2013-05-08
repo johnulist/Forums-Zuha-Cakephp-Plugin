@@ -5,7 +5,13 @@
 	<?php
 		echo $this->Form->input('ForumPost.parent_id', array('type' => 'hidden', 'value' => $parentId));
 		echo $this->Form->input('ForumPost.title');
-		echo $this->Form->input('ForumPost.body', array('type' => 'richtext'));
+		echo $this->Form->input('ForumPost.body', array(
+			'type' => 'richtext',
+			'hideToggleLinks' => true,
+			'ckeSettings' => array(
+				'buttons' => array('Bold', 'Italic', 'Strike', 'NumberedList', 'BulletedList', 'Blockquote')
+			)
+		));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit'));?>
