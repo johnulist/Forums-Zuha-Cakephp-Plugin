@@ -52,7 +52,8 @@ class ForumPost extends ForumsAppModel {
 			'foreignKey' => 'parent_id',
 			'conditions' => '',
 			'fields' => '',
-			'order' => ''
+			'order' => '',
+			'counterCache' => true
 		),
 		'Creator' => array(
 			'className' => 'Users.User',

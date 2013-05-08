@@ -19,7 +19,7 @@ class ForumsController extends ForumsAppController {
  * 
  * @var string
  */
-	public $uses = false;
+	public $uses = null;
 	
 /**
  * Constructor
