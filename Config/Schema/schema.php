@@ -33,10 +33,11 @@ class ForumsSchema extends CakeSchema {
 		'is_closed' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
 		'order' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 5),
 		'children' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 5),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'forum_post_count' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 5),
 		'creator_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'modifier_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
