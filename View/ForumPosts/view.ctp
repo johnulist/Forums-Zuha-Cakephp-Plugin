@@ -1,24 +1,19 @@
-<div class="forumPosts view">
-	<?php #debug($forumPost); ?>
-	<!-- <h2><?php echo $forumPost['ForumPost']['title'];?></h2> -->
-	<?php
-	echo $this->Html->tag('h3',
-		$this->Html->link('Forums', array('action' => 'index'))
-		. ' &raquo; '
-		. $this->Html->link($forumPost['ParentForumPost']['title'], array('action' => 'index', $forumPost['ParentForumPost']['id']))
-	);
-	echo $this->Html->tag('h2', $forumPost['ForumPost']['title']);
-	?>
-	<p><?php echo $forumPost['ForumPost']['body']; ?></p>
-	<?php
-	// who posted
-	echo $this->element('Galleries.thumb', array('model'=>'User', 'foreignKey'=>$forumPost['Creator']['id']));
-	echo $this->Html->link($forumPost['Creator']['username'], array('plugin'=>'users', 'controller'=>'users', 'action'=>'view', $forumPost['Creator']['id']));
-	echo ' posted ' . $this->Time->niceShort($forumPost['ForumPost']['created']);
-	?>
-	<?php
-	echo $this->Tree->generate($children, array('element' => 'tree_item'));
-	?>
+<div class="forumPosts view">	
+	<ul class="breadcrumb">
+  		<li><?php echo $this->Html->link('Forums', array('action' => 'index')); ?><span class="divider">/</span></li>
+  		<li><?php echo $this->Html->link($forumPost['ParentForumPost']['title'], array('action' => 'index', $forumPost['ParentForumPost']['id'])); ?><span class="divider">/</span></li>
+  		<li class="active"><?php echo $forumPost['ForumPost']['title']; ?></li>
+	</ul>
+	<div class="media">
+	  <?php echo $this->element('Galleries.thumb', array('model' => 'User', 'foreignKey' => $forumPost['Creator']['id'], 'thumbClass' => 'pull-left')); ?>
+	  <div class="media-body">
+	    <h4 class="media-heading"><?php echo $forumPost['ForumPost']['title']; ?></h4>
+	    <p><?php echo $this->Html->link($forumPost['Creator']['username'], array('plugin'=>'users', 'controller'=>'users', 'action'=>'view', $forumPost['Creator']['id'])); 
+			echo ' posted ' . $this->Time->niceShort($forumPost['ForumPost']['created']); ?></p>
+	    <?php echo $forumPost['ForumPost']['body']; ?>
+	  </div>
+	</div>
+	<?php echo $this->Tree->generate($children, array('element' => 'tree_item')); ?>
 </div>
 
 <div class="forumPosts form">

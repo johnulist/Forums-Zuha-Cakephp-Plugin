@@ -19,7 +19,7 @@ class ForumsController extends ForumsAppController {
  * 
  * @var string
  */
-	public $uses = null;
+	public $uses = 'Forums.ForumPost';
 	
 /**
  * Constructor
@@ -29,6 +29,28 @@ class ForumsController extends ForumsAppController {
  */
 	public function __construct($request = null, $response = null) {
 		parent::__construct($request, $response);
+	}
+	
+	public function index() {
 		$this->redirect(array('controller' => 'forum_posts', 'action' => 'index'));
+	}
+	
+/**
+ * Topic method
+ * 
+ * A topic is a top level holder. 
+ */
+	public function topic() {
+		if ($this->request->is('post')) {
+			$this->ForumPost->create();
+			if ($this->ForumPost->save($this->request->data)) {
+				$this->Session->setFlash(__('The forum has been saved'));
+				$this->redirect($this->referer());
+			} else {
+				$this->Session->setFlash(__('The forum could not be saved. Please, try again.'));
+			}
+		}
+		$parentForum = $this->ForumPost->find('first', array('conditions' => array('ForumPost.id' => $parentId)));
+		$this->set(compact('parentForum', 'parentId'));
 	}
 }

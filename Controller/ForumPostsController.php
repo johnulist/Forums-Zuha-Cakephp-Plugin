@@ -46,7 +46,7 @@ class ForumPostsController extends ForumsAppController {
 			'ParentForumPost' => array('fields' => array('ParentForumPost.id', 'ParentForumPost.title'))
 		);
 		$this->paginate['fields'] = array(
-			'ForumPost.id', 'ForumPost.title', 'ForumPost.forum_post_count'
+			'ForumPost.id', 'ForumPost.title', 'ForumPost.forum_post_count', 'ForumPost.body'
 			// 'ForumPost.creator_id',
 			//'Creator.id', 'Creator.username', 'Creator.user_role_id'
 		);
@@ -107,10 +107,9 @@ class ForumPostsController extends ForumsAppController {
 				$this->Session->setFlash(__('The forum post could not be saved. Please, try again.'));
 			}
 		}
+		debug($this->request->data);
 		$parentForum = $this->ForumPost->find('first', array('conditions' => array('ForumPost.id' => $parentId)));
-		$creators = $this->ForumPost->Creator->find('list');
-		$modifiers = $this->ForumPost->Modifier->find('list');
-		$this->set(compact('parentForum', 'creators', 'modifiers', 'parentId'));
+		$this->set(compact('parentForum', 'parentId'));
 	}
 
 /**

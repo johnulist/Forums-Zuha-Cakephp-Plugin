@@ -1,38 +1,34 @@
 <div class="forumPosts index">
-	<?php
-	//debug($forumPosts);
-	//debug($parent);
-	
+	<?php	
 	if ( !empty($parent['ForumPost']['title']) ) {
-		$forumTitle = $this->Html->link('Forums', array('action' => 'index'))
-					. ' &raquo; '
-					. $parent['ForumPost']['title'];
+		$forumTitle = $parent['ForumPost']['title'];
 		$forumPosition = 'subforum';
 		$postAction = 'view';
 	} else {
 		$forumTitle = 'Forums';
 		$forumPosition = 'top';
 		$postAction = 'index';
-	}
-	
-	echo $this->Html->tag('h2', $forumTitle);
-	
+	} ?>
+	<ul class="breadcrumb">
+  		<li><?php echo $this->Html->link('Forums', array('action' => 'index')); ?><span class="divider">/</span></li>
+  		<li class="active"><?php echo $forumTitle; ?></li>
+	</ul>
+	<?php	
 	if ( !empty($forumPosts) ) {
 		foreach ($forumPosts as $post) {
 			
-			if ( $forumPosition === 'subforum' ) {
+			if ( $forumPosition === 'subforum' && count($post['ForumPost']['forum_post_count']) > 0) {
 				$replies = ' <small class="red">('.$post['ForumPost']['forum_post_count'].' replies)</small>';
-			} else { $replies = ''; }
-			
+			} else {
+				 $replies = '(0 replies)'; 
+			}
 			echo __(
-				'<h3>%s %s</h3>',
-				$this->Html->link(
-					__($post['ForumPost']['title'] . ' &raquo;'),
-					array('action' => $postAction, $post['ForumPost']['id']),
-					array('escape' => false)
-				),
+				'<h4>%s <small>%s %s&#133;%s</small></h4>',
+				$this->Html->link(__($post['ForumPost']['title']), array('action' => $postAction, $post['ForumPost']['id']), array('escape' => false)),
+				substr(strip_tags($post['ForumPost']['body']), 0, 50),
+				$this->Html->link('view', array('action' => $postAction, $post['ForumPost']['id']), array('escape' => false)),
 				$replies
-			);
+				);
 			
 			echo __('<ul>');
 			foreach ($post['Child'] as $child) {
@@ -45,10 +41,10 @@
 			echo __('</ul>');
 		}
 	} else {
-		echo $this->Html->tag('i', 'no posts yet. be the first!');
+		echo $this->Html->tag('h5', 'No posts yet. be the first');
 	}
 	?>
-	
+	<hr />
 	<?php if ( $forumPosition == 'subforum' ) { ?>
 		<div class="forumPosts form">
 		<?php echo $this->Form->create('ForumPost', array('action' => 'add'));?>
@@ -71,3 +67,14 @@
 	<?php } ?>
 	
 </div>
+
+<?php 
+// set the contextual menu items
+$this->set('context_menu', array('menus' => array(
+	array(
+		'heading' => 'Forum Topics',
+		'items' => array(
+			$this->Html->link(__('Add'), array('action' => 'add')),
+			)
+		),
+	))); ?>
