@@ -5,15 +5,15 @@
   		<li class="active"><?php echo $forumPost['ForumPost']['title']; ?></li>
 	</ul>
 	<div class="media">
-	  <?php echo $this->element('Galleries.thumb', array('model' => 'User', 'foreignKey' => $forumPost['Creator']['id'], 'thumbClass' => 'pull-left')); ?>
-	  <div class="media-body">
-	    <h4 class="media-heading"><?php echo $forumPost['ForumPost']['title']; ?></h4>
-	    <p><?php echo $this->Html->link($forumPost['Creator']['username'], array('plugin'=>'users', 'controller'=>'users', 'action'=>'view', $forumPost['Creator']['id'])); 
-			echo ' posted ' . $this->Time->niceShort($forumPost['ForumPost']['created']); ?></p>
-	    <?php echo $forumPost['ForumPost']['body']; ?>
-	  </div>
+	  	<?php echo $this->element('Galleries.thumb', array('model' => 'User', 'foreignKey' => $forumPost['Creator']['id'], 'thumbClass' => 'pull-left')); ?>
+	  	<div class="media-body">
+	    	<h4 class="media-heading"><?php echo $forumPost['ForumPost']['title']; ?></h4>
+	    	<p><?php echo $this->Html->link($forumPost['Creator']['username'], array('plugin'=>'users', 'controller'=>'users', 'action'=>'view', $forumPost['Creator']['id'])); 
+					 echo ' posted ' . $this->Time->niceShort($forumPost['ForumPost']['created']); ?></p>
+	    	<?php echo $forumPost['ForumPost']['body']; ?>
+			<?php echo $this->Tree->generate($children, array('element' => 'tree_item', 'type' => 'div', 'itemType' => 'div')); ?>
+	  	</div>
 	</div>
-	<?php echo $this->Tree->generate($children, array('element' => 'tree_item')); ?>
 </div>
 
 <div class="forumPosts form">
