@@ -1,4 +1,4 @@
 Forums-Zuha-Cakephp-Plugin
 =================================
 
-Simple forums for the zuha system. 
+Simple forums plugin.
