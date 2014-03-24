@@ -107,7 +107,6 @@ class ForumPostsController extends ForumsAppController {
 				$this->Session->setFlash(__('The forum post could not be saved. Please, try again.'));
 			}
 		}
-		debug($this->request->data);
 		$parentForum = $this->ForumPost->find('first', array('conditions' => array('ForumPost.id' => $parentId)));
 		$this->set(compact('parentForum', 'parentId'));
 	}

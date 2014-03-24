@@ -1,10 +1,5 @@
 <div class="forumPosts view">	
-	<ul class="breadcrumb">
-  		<li><?php echo $this->Html->link('Forums', array('action' => 'index')); ?><span class="divider">/</span></li>
-  		<li><?php echo $this->Html->link($forumPost['ParentForumPost']['title'], array('action' => 'index', $forumPost['ParentForumPost']['id'])); ?><span class="divider">/</span></li>
-  		<li class="active"><?php echo $forumPost['ForumPost']['title']; ?></li>
-	</ul>
-	<div class="media">
+	<div class="media clearfix">
 	  	<?php echo $this->element('Galleries.thumb', array('model' => 'User', 'foreignKey' => $forumPost['Creator']['id'], 'thumbClass' => 'pull-left')); ?>
 	  	<div class="media-body">
 	    	<h4 class="media-heading"><?php echo $forumPost['ForumPost']['title']; ?></h4>
@@ -34,8 +29,13 @@
 	</fieldset>
 	<?php echo $this->Form->end(__('Submit'));?>
 </div>
-
 <?php
+// set the contextual breadcrumb items
+$this->set('context_crumbs', array('crumbs' => array(
+	$this->Html->link('Forums', array('action' => 'index')),
+	$this->Html->link($forumPost['ParentForumPost']['title'], array('action' => 'index', $forumPost['ParentForumPost']['id'])),
+	$forumPost['ForumPost']['title']
+)));
 // set the contextual menu items
 $this->set('context_menu', array('menus' => array(
 	array(
@@ -46,4 +46,4 @@ $this->set('context_menu', array('menus' => array(
 			$this->Form->postLink(__('Delete'), array('action' => 'delete', $forumPost['ForumPost']['id']), null, __('Are you sure you want to delete # %s?', $forumPost['ForumPost']['id'])),
 			)
 		),
-	))); ?>
+	)));

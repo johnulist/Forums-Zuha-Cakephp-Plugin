@@ -1,5 +1,5 @@
 <a name="<?php echo $data['ForumPost']['id'] ?>"></a>
-<div class="media">
+<div class="media clearfix">
   <?php echo $this->element('Galleries.thumb', array('model'=>'User', 'foreignKey' => $data['Creator']['id'], 'thumbClass' => 'pull-left')); ?>
   <div class="media-body">
     <h4 class="media-heading"><?php echo $data['ForumPost']['title']; ?></h4>

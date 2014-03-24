@@ -1,5 +1,6 @@
 <div class="forumPosts index">
 	<?php	
+	// this should go in the controller
 	if ( !empty($parent['ForumPost']['title']) ) {
 		$forumTitle = $parent['ForumPost']['title'];
 		$forumPosition = 'subforum';
@@ -9,10 +10,6 @@
 		$forumPosition = 'top';
 		$postAction = 'index';
 	} ?>
-	<ul class="breadcrumb">
-  		<li><?php echo $this->Html->link('Forums', array('action' => 'index')); ?><span class="divider">/</span></li>
-  		<li class="active"><?php echo $forumTitle; ?></li>
-	</ul>
 	<?php	
 	if ( !empty($forumPosts) ) {
 		foreach ($forumPosts as $post) {
@@ -49,7 +46,7 @@
 		<div class="forumPosts form">
 		<?php echo $this->Form->create('ForumPost', array('action' => 'add'));?>
 			<fieldset>
-				<legend><?php echo __('Post to %s', $parent['ForumPost']['title']); ?></legend>
+				<legend><?php echo __('New thread in %s', $parent['ForumPost']['title']); ?></legend>
 			<?php
 				echo $this->Form->input('ForumPost.parent_id', array('type' => 'hidden', 'value' => $parent['ForumPost']['id']));
 				echo $this->Form->input('ForumPost.title');
@@ -67,14 +64,18 @@
 	<?php } ?>
 	
 </div>
-
 <?php 
+// set the contextual breadcrumb items
+$this->set('context_crumbs', array('crumbs' => array(
+	$this->Html->link('Forums', array('action' => 'index')),
+	$forumTitle
+)));
 // set the contextual menu items
 $this->set('context_menu', array('menus' => array(
 	array(
 		'heading' => 'Forum Topics',
 		'items' => array(
-			$this->Html->link(__('Add'), array('action' => 'add')),
+			$this->Html->link(__('New Topic'), array('controller' => 'forums', 'action' => 'topic')),
 			)
 		),
 	))); ?>
